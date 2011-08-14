@@ -56,7 +56,7 @@ class UGGameState
 public class UGMain {
 	
 	long time;
-	int timeDelta;
+	long timeDelta;
 	double playerLookPhi, playerLookTheta;
 	UGVertex[][] blockPoints;	
 	UGGameState gs;
@@ -82,7 +82,7 @@ public class UGMain {
 		
 		// init OpenGL here
 		UGWorld world = new UGWorld();
-		int DOOS = world.addMesh(new UGBox(50, 20, 100, new UGColor(1,1,1,1)));
+		int DOOS = world.addMesh(new UGBox(70, 40, 120, new UGColor(1,1,1,1)));
 		int BLOKJE_P1 = world.addMesh(new UGBox(3,3,3, gs.playerColor[0]));
 		int BLOKJE_P2 = world.addMesh(new UGBox(3,3,3, gs.playerColor[1]));
 		int BLOKJE_P3 = world.addMesh(new UGBox(3,3,3, gs.playerColor[2]));
@@ -117,7 +117,7 @@ public class UGMain {
 		glViewport(0, 0, 800, 600);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluPerspective(60, 800.f/600.f, 1.f, 200.f);
+		gluPerspective(60, 800.f/600.f, 1.f, 400.f);
 		glMatrixMode(GL_MODELVIEW);
 		
 		glEnable(GL_DEPTH_TEST);
@@ -136,10 +136,13 @@ public class UGMain {
 		
 		glDisable(GL_CULL_FACE);
 		
+		long t = System.nanoTime();
+		
 		while (!Display.isCloseRequested() && ! Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) 
 		{
 			
-			float t = System.nanoTime()/1000000-time;
+			timeDelta = System.nanoTime() - t;
+			t = System.nanoTime();
 			
 			glClearColor(0.f, 0.f, 0.f, 0.f);
 			glClearStencil(0);
@@ -149,20 +152,30 @@ public class UGMain {
 			float x = (float)(40 * Math.cos(t/1013));
 			float z = (float)(40 * Math.sin(t/1013));
 			
+			if (Keyboard.isKeyDown(Keyboard.KEY_A))
+			{
+				playerLookPhi -= timeDelta/1000000000.f * 90;
+			}
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_D))
+			{
+				playerLookPhi += timeDelta/1000000000.f * 90;
+			}
+			
 			gs.playerPaddleAngle[0] += Mouse.getDX() * 0.3;
-			playerLookTheta += Mouse.getDY() * 0.3;
-			if (playerLookTheta > 90)
-				playerLookTheta = 90;
-			if (playerLookTheta < -90)
-				playerLookTheta = -90;
+			//playerLookTheta += Mouse.getDY() * 0.3;
+			//if (playerLookTheta > 90)
+			//	playerLookTheta = 90;
+			//if (playerLookTheta < -90)
+			//	playerLookTheta = -90;
 			
 			Mouse.setCursorPosition(400, 300);
 			
 			//glRotatef(-(float)playerLookTheta, 1, 0, 0);
-			//glRotatef((float)playerLookPhi, 0, 1, 0);
-			//glTranslatef(20 * (float)Math.cos(t*0.001), 0, 20 * (float)Math.sin(t*0.001));
+			glRotatef((float)playerLookPhi, 0, 1, 0);
+			glTranslatef(50, -20, -100);
 			
-			gluLookAt(0, 0, -20, -45, 0, 90, 0, 1, 0);
+			//gluLookAt(-50, 20, 100, 0, 0, 0, 0, 1, 0);
 			
 			world.render();
 			
