@@ -1,6 +1,7 @@
 package mts;
 
 import java.util.Enumeration;
+import java.nio.*;
 
 import org.lwjgl.*;
 import org.lwjgl.opengl.*;
@@ -60,6 +61,8 @@ public class UGMain {
 	double playerLookPhi, playerLookTheta;
 	UGVertex[][] blockPoints;	
 	UGGameState gs;
+	FloatBuffer lightCol = BufferUtils.createFloatBuffer(4).put(new float[] {1,0,0,1});
+	FloatBuffer lightPos = BufferUtils.createFloatBuffer(4).put(new float[] {0,0,0,1});
 	
 	public void start() 
 	{
@@ -127,6 +130,12 @@ public class UGMain {
 		glEnable(GL_LINE_SMOOTH); 
 		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glEnable(GL_LIGHTING);
+		
+		glLight(GL_LIGHT1, GL_DIFFUSE, (FloatBuffer)lightCol.flip());
+		//glLight(GL_LIGHT1, GL_SPECULAR, (FloatBuffer)lightCol.flip());
+		glLight(GL_LIGHT1, GL_POSITION, (FloatBuffer)lightPos.flip());
+		glEnable(GL_LIGHT1);
 		
 		time = System.nanoTime()/1000000;
 		
@@ -173,7 +182,7 @@ public class UGMain {
 			
 			//glRotatef(-(float)playerLookTheta, 1, 0, 0);
 			glRotatef((float)playerLookPhi, 0, 1, 0);
-			glTranslatef(50, -20, -100);
+			//glTranslatef(-50, -20, -100);
 			
 			//gluLookAt(-50, 20, 100, 0, 0, 0, 0, 1, 0);
 			
