@@ -72,6 +72,9 @@ class UGWorld
 			UGMesh mesh = meshes.elementAt(object.mesh);
 			
 			//glLoadIdentity();
+			glRotatef((float)object.rot.x, 1, 0, 0);
+			glRotatef((float)object.rot.y, 0, 1, 0);
+			glRotatef((float)object.rot.z, 0, 0, 1);
 			glTranslatef((float)object.pos.x, (float)object.pos.y, (float)object.pos.z);
 			
 			//glEnable(GL_STENCIL_TEST);

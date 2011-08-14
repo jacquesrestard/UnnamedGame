@@ -7,6 +7,11 @@ class UGVertex
 {
 	double x, y, z;
 	
+	public UGVertex()
+	{
+		x = y = z = 0;
+	}
+	
 	public UGVertex(double x, double y, double z)
 	{
 		this.x = x;

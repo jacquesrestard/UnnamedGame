@@ -8,10 +8,12 @@ class UGObject
 {
 	int mesh;
 	UGVertex pos;
+	UGVertex rot;
 	
-	public UGObject(int mesh, UGVertex pos)
+	public UGObject(int mesh, UGVertex pos, UGVertex rot)
 	{
 		this.mesh = mesh;
 		this.pos = pos;
+		this.rot = rot;
 	}
 }
